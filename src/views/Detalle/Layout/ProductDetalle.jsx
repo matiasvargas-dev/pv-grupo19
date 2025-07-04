@@ -37,23 +37,27 @@ const ProductoDetalleLayout = ({ producto, isFavorite, onFavoriteToggle }) => {
 
   return (
     <Container
-      maxW={{ base: "100%", md: "7xl" }}
-      w="100%"
-      px={{ base: 2, md: 8 }}
-      py={{ base: 4, md: 8 }}
+      maxW="6xl" // Cambiado de 7xl y responsive object
+      px={{ base: 4, md: 6, lg: 8 }} // Padding más consistente
+      py={{ base: 4, md: 6 }}
     >
-      <Grid templateColumns={{ base: "1fr", lg: "1fr 1fr" }} gap={8}>
+      <Grid 
+        templateColumns={{ base: "1fr", lg: "1fr 1fr" }} 
+        gap={{ base: 6, md: 8 }}
+        w="100%"
+      >
         {/* Imagen del producto */}
         <GridItem>
           <Box
             bg={bgColor}
-            borderRadius="2xl"
+            borderRadius="xl"
             border="1px"
             borderColor={borderColor}
-            p={4}
+            p={{ base: 4, md: 6 }}
             position="relative"
-            boxShadow="lg"
-            mx={10}
+            boxShadow="md"
+            w="100%" // Asegurar que ocupe todo el ancho disponible
+            mx="auto" // Centrar horizontalmente
           >
             <FavButton
               isFavorite={isFavorite}
@@ -64,20 +68,27 @@ const ProductoDetalleLayout = ({ producto, isFavorite, onFavoriteToggle }) => {
               zIndex={2}
               size="md"
             />
-            <Image
-              src={producto.image}
-              alt={producto.title}
+            <Box
               w="100%"
-              maxW="100%"
-              h={{ base: "200px", md: "300px" }}
-              objectFit="contain"
-            />
+              h={{ base: "250px", md: "350px", lg: "400px" }}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Image
+                src={producto.image}
+                alt={producto.title}
+                maxW="100%"
+                maxH="100%"
+                objectFit="contain"
+              />
+            </Box>
           </Box>
         </GridItem>
 
         {/* Información del producto */}
         <GridItem>
-          <VStack align="stretch" spacing={5}>
+          <VStack align="stretch" spacing={5} h="100%">
             {/* Título y precio */}
             <Box>
               <Badge
@@ -92,16 +103,28 @@ const ProductoDetalleLayout = ({ producto, isFavorite, onFavoriteToggle }) => {
               >
                 {producto.category}
               </Badge>
-              <Heading size="lg" mb={2}>
+              <Heading 
+                size={{ base: "md", md: "lg" }} 
+                mb={2}
+                lineHeight="1.2"
+              >
                 {producto.title}
               </Heading>
-              <Text fontSize="3xl" fontWeight="bold" color="blue.500">
+              <Text 
+                fontSize={{ base: "2xl", md: "3xl" }} 
+                fontWeight="bold" 
+                color="blue.500"
+              >
                 ${producto.price}
               </Text>
             </Box>
 
             {/* Rating y stock */}
-            <HStack spacing={8}>
+            <HStack 
+              spacing={{ base: 4, md: 8 }}
+              flexWrap="wrap"
+              align="center"
+            >
               <Box>
                 {producto.rating && (
                   <RatingStars
@@ -124,34 +147,47 @@ const ProductoDetalleLayout = ({ producto, isFavorite, onFavoriteToggle }) => {
             <Divider />
 
             {/* Descripción */}
-            <Box>
+            <Box flex="1">
               <Heading size="md" mb={3}>
                 Descripción
-                <Divider />
               </Heading>
-              <Text lineHeight="1.8" color="gray.600" mx={"2px"} px={4}>
+              <Divider mb={3} />
+              <Text 
+                lineHeight="1.7" 
+                color="gray.600"
+                fontSize={{ base: "sm", md: "md" }}
+              >
                 {producto.description}
               </Text>
             </Box>
 
             {/* Estadísticas del producto */}
-            <SimpleGrid columns={3} spacing={4} mb={"20px"}>
-              <Stat>
-                <StatLabel>Calificación</StatLabel>
-                <StatNumber>{producto.rating?.rate || "N/A"}</StatNumber>
-                <StatHelpText>de 5 estrellas</StatHelpText>
+            <SimpleGrid 
+              columns={3} 
+              spacing={4} 
+              pt={4}
+              borderTop="1px"
+              borderColor={borderColor}
+            >
+              <Stat textAlign="center">
+                <StatLabel fontSize="xs">Calificación</StatLabel>
+                <StatNumber fontSize="lg">{producto.rating?.rate || "N/A"}</StatNumber>
+                <StatHelpText fontSize="xs">de 5 estrellas</StatHelpText>
               </Stat>
-              <Stat>
-                <StatLabel>Reseñas</StatLabel>
-                <StatNumber>{producto.rating?.count || 0}</StatNumber>
-                <StatHelpText>compradores</StatHelpText>
+              <Stat textAlign="center">
+                <StatLabel fontSize="xs">Reseñas</StatLabel>
+                <StatNumber fontSize="lg">{producto.rating?.count || 0}</StatNumber>
+                <StatHelpText fontSize="xs">compradores</StatHelpText>
               </Stat>
-              <Stat>
-                <StatLabel>Disponibilidad</StatLabel>
-                <StatNumber color={`${stockInfo.color}.500`}>
+              <Stat textAlign="center">
+                <StatLabel fontSize="xs">Disponibilidad</StatLabel>
+                <StatNumber 
+                  fontSize="lg"
+                  color={`${stockInfo.color}.500`}
+                >
                   {stockInfo.stock}
                 </StatNumber>
-                <StatHelpText>{stockInfo.cantidad}</StatHelpText>
+                <StatHelpText fontSize="xs">{stockInfo.cantidad}</StatHelpText>
               </Stat>
             </SimpleGrid>
           </VStack>
